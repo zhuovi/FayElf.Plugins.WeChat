@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="E:/Work/XiaoFeng.targets"/>
+	<PropertyGroup>
+		<TargetFrameworks>net5.0;net6.0;</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<Authors>Jacky</Authors>
+		<Company>魔法精灵软件</Company>
+		<Copyright>CopyRight @ 2019-2023 魔法精灵软件(www.fayelf.com) QQ:7092734 Email:jacky@fayelf.com</Copyright>
+		<VersionPrefix>1.0</VersionPrefix>
+		<VersionSuffix>5</VersionSuffix>
+		<Version>$(VersionPrefix).$(VersionSuffix)</Version>
+		<FileVersion>$(Version)</FileVersion>
+		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
+		<ProductVersion>$(VersionPrefix)</ProductVersion>
+		<PackageTags>FAYELF</PackageTags>
+		<Description>FayElf.Plugins.WeChat</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App"/>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)'=='net6.0'">
+		<Using Include="XiaoFeng;XiaoFeng.IO;XiaoFeng.Http;Microsoft.AspNetCore.Builder;Microsoft.Extensions.DependencyInjection;" />
+		<Using Remove="System.Net.Http;Microsoft.AspNetCore.Http;"/>
+	</ItemGroup>
+</Project>
