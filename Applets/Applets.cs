@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using XiaoFeng;
 using XiaoFeng.Http;
-using static System.Formats.Asn1.AsnWriter;
+
 /****************************************************************
 *  Copyright © (2021) www.fayelf.com All Rights Reserved.       *
 *  Author : jacky                                               *
