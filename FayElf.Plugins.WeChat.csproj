@@ -5,13 +5,14 @@
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<Authors>Jacky</Authors>
 		<Company>魔法精灵软件</Company>
-		<Copyright>CopyRight @ 2019-2023 魔法精灵软件(www.eelf.cn) QQ:7092734 Email:jacky@fayelf.com</Copyright>
+		<Copyright>CopyRight @ 2019-2023 魔法精灵软件(www.eelf.cn) QQ:7092734 Email:jacky@eelf.cn</Copyright>
 		<VersionPrefix>1.0</VersionPrefix>
 		<VersionSuffix>5</VersionSuffix>
 		<Version>$(VersionPrefix).$(VersionSuffix)</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>
 		<ProductVersion>$(VersionPrefix)</ProductVersion>
+		<PackageIconUrl>http://nuget.fayelf.com/x.png</PackageIconUrl>
 		<PackageTags>FAYELF;XiaoFeng;WeChat;</PackageTags>
 		<Description>微信公众号，小程序类库</Description>
 		<PackageReleaseNotes>修复.net7与HttpMethod冲突;优化部分功能;增加readme.md实例</PackageReleaseNotes>
