@@ -65,6 +65,14 @@ namespace FayElf.Plugins.WeChat.Model
         /// </summary>
         [XmlCData]
         public string EventKey { get; set; }
+        /// <summary>
+        /// 消息的数据ID（消息如果来自文章时才有）
+        /// </summary>
+        public string MsgDataId { get; set; }
+        /// <summary>
+        /// 多图文时第几篇文章，从1开始（消息如果来自文章时才有）
+        /// </summary>
+        public string Idx { get; set; }
         #endregion
 
         #region 方法

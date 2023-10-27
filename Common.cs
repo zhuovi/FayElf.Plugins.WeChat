@@ -36,11 +36,11 @@ namespace FayElf.Plugins.WeChat
             var AccessToken = XiaoFeng.Cache.CacheHelper.Get<AccessTokenData>("AccessToken" + appID);
             if (AccessToken.IsNotNullOrEmpty()) return AccessToken;
             var data = new AccessTokenData();
-            var result = HttpHelper.GetHtml(new HttpRequest
+            var result = new HttpRequest
             {
                 Method = HttpMethod.Get,
                 Address = $"{HttpApi.HOST}/cgi-bin/token?grant_type=client_credential&appid={appID}&secret={appSecret}"
-            });
+            }.GetResponse();
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 data = result.Html.JsonToObject<AccessTokenData>();
@@ -77,7 +77,7 @@ namespace FayElf.Plugins.WeChat
         /// </summary>
         /// <param name="weChatType">微信类型</param>
         /// <returns></returns>
-        public static AccessTokenData GetAccessToken(WeChatType weChatType = WeChatType.OfficeAccount) => GetAccessToken(new Config().GetConfig(weChatType));
+        public static AccessTokenData GetAccessToken(WeChatType weChatType = WeChatType.OfficeAccount) => GetAccessToken(Config.Current.GetConfig(weChatType));
         #endregion
 
         #region 运行
@@ -135,5 +135,6 @@ namespace FayElf.Plugins.WeChat
             };
         }
         #endregion
+
     }
 }

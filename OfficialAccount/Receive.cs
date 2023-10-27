@@ -38,6 +38,9 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
         #endregion
 
         #region 属性
+        /// <summary>
+        /// 配置
+        /// </summary>
         public Config Config { get; set; }
         #endregion
 
@@ -51,7 +54,8 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
         public Boolean CheckSignature(string signature, string nonce, string timestamp,string token)
         {
             if (signature.IsNullOrEmpty() || nonce.IsNullOrEmpty() || timestamp.IsNullOrEmpty() || timestamp.IsNotMatch(@"^\d+$")) return false;
-            //LogHelper.WriteLog($"sign:{new string[] { token, nonce, timestamp }.OrderBy(a => a).Join("").SHA1Encrypt().ToLower()}");
+            Config.WriteLog($"signature:{signature},nonce:{nonce},timestamp:{timestamp},token:{token}");
+            Config.WriteLog($"sign:{new string[] { token, nonce, timestamp }.OrderBy(a => a).Join("").SHA1Encrypt().ToLower()}");
             return new string[] { token, nonce, timestamp }.OrderBy(a => a).Join("").SHA1Encrypt().ToLower() == signature.ToLower();
         }
         #endregion
@@ -68,16 +72,16 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
             var timestamp = request.Query["timestamp"].ToString();
             var nonce = request.Query["nonce"].ToString();
             var echostr = request.Query["echostr"].ToString();
-            LogHelper.WriteLog($"encrypt_type:{encrypt_type},signature:{signature},timestamp:{timestamp},nonce:{nonce},echostr:{echostr},token:{this.Config.Token}");
+            Config.WriteLog($"encrypt_type:{encrypt_type},signature:{signature},timestamp:{timestamp},nonce:{nonce},echostr:{echostr},token:{this.Config.Token}");
             if (request.Method == "GET")
             {
                 
                 return this.CheckSignature(signature, nonce, timestamp, this.Config.Token) ? echostr : "error";
             }
             var msg_signature = request.Query["msg_signature"].ToString();
-            LogHelper.WriteLog($"msg_signature:{msg_signature}");
+            Config.WriteLog($"msg_signature:{msg_signature}");
             var msg = request.Body.ReadToEnd();
-            LogHelper.Warn(msg);
+            Config.WriteLog(msg);
             if (encrypt_type)
             {
                 var wxBizMsgCrypt = new WXBizMsgCrypt(this.Config.Token, this.Config.EncodingAESKey, this.Config.AppID);
@@ -86,7 +90,7 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
                 if (ret != 0)//解密失败
                 {
                     //TODO：开发者解密失败的业务处理逻辑
-                    LogHelper.Warn($"微信公众号数据解密失败.[decrypt message return {ret}, request body {msg}]");
+                    Config.WriteLog($"微信公众号数据解密失败.[decrypt message return {ret}, request body {msg}]");
                 }
                 msg = _msg;
             }
@@ -103,7 +107,7 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
                 if (ret != 0)//加密失败
                 {
                     //TODO：开发者加密失败的业务处理逻辑
-                    LogHelper.Warn($"微信公众号数据加密失败.[encrypt message return {ret}, response body {message}]");
+                    Config.WriteLog($"微信公众号数据加密失败.[encrypt message return {ret}, response body {message}]");
                 }
                 message= _msg;
             }

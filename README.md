@@ -96,6 +96,92 @@ Cake
 
 ### FayElf.Plugins.WeChat 用法实例
 
+#### 微信公众号
+
+```csharp
+var receive = new FayElf.Plugins.WeChat.OfficialAccount.Receive();
+var msg = receive.RequestMessage(this.Request, (message, xValue) =>
+{
+    //message 是收到的结构消息
+    //xvalue 是xml结构数据
+    if (message.IsNullOrEmpty()) return "error";
+    if (message.Event == FayElf.Plugins.WeChat.EventType.subscribe)
+    {
+        //订阅事件
+    }
+    else if (message.Event == FayElf.Plugins.WeChat.EventType.unsubscribe)
+    {
+        //取消订阅事件
+    }
+    if (message.MsgType == Plugins.WeChat.MessageType.text)
+    {
+        //接收回复消息
+    }
+    return string.Empty;
+});
+if (this.Request.Method == HttpMethod.Get.ToString())
+{
+    if (msg == "error") return Content("error");
+    else return Content(msg);
+}
+return Content(msg);
+```
+
+#### 微信小程序
+
+```csharp
+
+```
+
+#### JsSDK
+
+```csharp
+var sign = new FayElf.Plugins.WeChat.JSSDK().GetSignature(XiaoFeng.Mvc.Web.HttpContext.Current.Request.GetUri().ToString());
+//sign模型
+/// <summary>
+    /// 签名模型
+    /// </summary>
+    public class SignatureModel
+    {
+        #region 构造器
+        /// <summary>
+        /// 无参构造器
+        /// </summary>
+        public SignatureModel()
+        {
+
+        }
+        #endregion
+
+        #region 属性
+        /// <summary>
+        /// 应用ID
+        /// </summary>
+        public string AppId { get; set; }
+        /// <summary>
+        /// Noice字符串
+        /// </summary>
+        public string NonceString { get; set; }
+        /// <summary>
+        /// 时间戳
+        /// </summary>
+        public int Timestamp { get; set; }
+        /// <summary>
+        /// 原始字符串
+        /// </summary>
+        public string RawString { get; set; }
+        /// <summary>
+        /// 签名
+        /// </summary>
+        public string Signature { get; set; }
+        #endregion
+
+        #region 方法
+
+        #endregion
+    }
+```
+
 
 
 # 作者介绍

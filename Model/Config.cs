@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using XiaoFeng;
 using XiaoFeng.Config;
 
 /****************************************************************
@@ -50,6 +51,10 @@ namespace FayElf.Plugins.WeChat
         [Description("密钥")]
         public string AppSecret { get; set; } = "";
         /// <summary>
+        /// 是否调试
+        /// </summary>
+        public bool Debug { get; set; } = true;
+        /// <summary>
         /// 公众号配置
         /// </summary>
         [Description("公众号配置")]
@@ -80,5 +85,16 @@ namespace FayElf.Plugins.WeChat
             else
                 return config;
         }
+        #region 写日志
+        /// <summary>
+        /// 写日志
+        /// </summary>
+        /// <param name="msg">消息</param>
+        public void WriteLog(string msg)
+        {
+            if (this.Debug)
+                LogHelper.Debug(msg);
+        }
+        #endregion
     }
 }

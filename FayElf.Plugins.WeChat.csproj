@@ -8,7 +8,7 @@
 		<Company>魔法精灵软件</Company>
 		<Copyright>CopyRight @ 2019-2023 魔法精灵软件(www.fayelf.com) QQ:7092734 Email:jacky@fayelf.com</Copyright>
 		<VersionPrefix>1.0</VersionPrefix>
-		<VersionSuffix>5</VersionSuffix>
+		<VersionSuffix>6</VersionSuffix>
 		<Version>$(VersionPrefix).$(VersionSuffix)</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(VersionPrefix)</AssemblyVersion>

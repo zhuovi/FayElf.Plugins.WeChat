@@ -30,43 +30,51 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
         /// </summary>
         public OAuthAPI()
         {
-
+            this.Config = Config.Current;
         }
         #endregion
 
         #region 属性
-
+        /// <summary>
+        /// 配置
+        /// </summary>
+        public Config Config { get; set; }
+        /// <summary>
+        /// Token
+        /// </summary>
+        public AccessTokenModel AccessToken { get; set; }
         #endregion
 
         #region 方法
 
         #region 通过code换取网页授权access_token
+
         /// <summary>
         /// 通过code换取网页授权access_token
         /// </summary>
-        /// <param name="appID">公众号的唯一标识</param>
-        /// <param name="appSecret">公众号的appsecret</param>
         /// <param name="code">填写第一步获取的code参数</param>
         /// <returns></returns>
-        public static AccessTokenModel GetAccessToken(string appID, string appSecret, string code)
+        public AccessTokenModel GetAccessToken(string code)
         {
-            var AccessToken = XiaoFeng.Cache.CacheHelper.Get<AccessTokenModel>("AccessTokenModel" + appID);
+            var config = this.Config.GetConfig(WeChatType.OfficeAccount);
+            var AccessToken = XiaoFeng.Cache.CacheHelper.Get<AccessTokenModel>("AccessTokenModel" + config.AppID);
             if (AccessToken.IsNotNullOrEmpty())
             {
                 if (AccessToken.ExpiresIn <= 60)
                 {
-                    return RefreshAccessToken(appID, AccessToken.RefreshToken);
+                    return RefreshAccessToken();
                 }
-                return AccessToken;
+                return this.AccessToken = AccessToken;
             }
-            var result = HttpHelper.GetHtml(new HttpRequest
+            var result = new HttpRequest
             {
                 Method = HttpMethod.Get,
-                Address = $"https://api.weixin.qq.com/sns/oauth2/access_token?appid={appID}&secret={appSecret}&code={code}&grant_type=authorization_code"
-            });
+                Address = $"https://api.weixin.qq.com/sns/oauth2/access_token?appid={config.AppID}&secret={config.AppSecret}&code={code}&grant_type=authorization_code"
+            }.GetResponse();
+            Config.WriteLog(result.Html);
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return result.Html.JsonToObject<AccessTokenModel>();
+                return this.AccessToken = result.Html.JsonToObject<AccessTokenModel>();
             }
             else
             {
@@ -83,19 +91,18 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
         /// <summary>
         /// 刷新access_token
         /// </summary>
-        /// <param name="appID">公众号的唯一标识</param>
-        /// <param name="refreshtoken">填写为refresh_token</param>
         /// <returns></returns>
-        public static AccessTokenModel RefreshAccessToken(string appID, string refreshtoken)
+        public AccessTokenModel RefreshAccessToken()
         {
-            var result = HttpHelper.GetHtml(new HttpRequest
+            var config = this.Config.GetConfig(WeChatType.OfficeAccount);
+            var result = new HttpRequest
             {
                 Method = HttpMethod.Get,
-                Address = $"https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={appID}&grant_type=refresh_token&refresh_token={refreshtoken}"
-            });
+                Address = $"https://api.weixin.qq.com/sns/oauth2/refresh_token?appid={config.AppID}&grant_type=refresh_token&refresh_token={this.AccessToken.RefreshToken}"
+            }.GetResponse();
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return result.Html.JsonToObject<AccessTokenModel>();
+                return this.AccessToken = result.Html.JsonToObject<AccessTokenModel>();
             }
             else
             {
@@ -112,17 +119,16 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
         /// <summary>
         /// 拉取用户信息(需scope为 snsapi_userinfo)
         /// </summary>
-        /// <param name="accessToken">网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</param>
         /// <param name="openId">用户的唯一标识</param>
         /// <param name="lang">返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语</param>
         /// <returns></returns>
-        public static UserInfoModel GetUserInfo(string accessToken, string openId, string lang = "zh_CN")
+        public UserInfoModel GetUserInfo(string openId, string lang = "zh_CN")
         {
-            var result = HttpHelper.GetHtml(new HttpRequest
+            var result = new HttpRequest
             {
                 Method = HttpMethod.Get,
-                Address = $"https://api.weixin.qq.com/sns/userinfo?access_token={accessToken}&openid={openId}&lang={lang}"
-            });
+                Address = $"https://api.weixin.qq.com/sns/userinfo?access_token={this.AccessToken.AccessToken}&openid={openId}&lang={lang}"
+            }.GetResponse();
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return result.Html.JsonToObject<UserInfoModel>();
@@ -145,13 +151,13 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
         /// <param name="accessToken">网页授权接口调用凭证,注意：此access_token与基础支持的access_token不同</param>
         /// <param name="openId">用户的唯一标识</param>
         /// <returns></returns>
-        public static Boolean CheckAccessToken(string accessToken, string openId)
+        public Boolean CheckAccessToken(string accessToken, string openId)
         {
-            var result = HttpHelper.GetHtml(new HttpRequest
+            var result = new HttpRequest
             {
                 Method = HttpMethod.Get,
                 Address = $" https://api.weixin.qq.com/sns/auth?access_token={accessToken}&openid={openId}"
-            });
+            }.GetResponse();
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 return result.Html.JsonToObject<BaseResult>().ErrCode == 0;
             return false;
