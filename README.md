@@ -31,42 +31,50 @@ XiaoFeng generator with [XiaoFeng](https://github.com/zhuovi/FayElf.Plugins.WeCh
 .NET CLI
 
 ```
-$ dotnet add package FayElf.Plugins.WeChat --version 1.0.4
+$ dotnet add package FayElf.Plugins.WeChat --version 1.0.5
 ```
 
 Package Manager
 
 ```
-PM> Install-Package FayElf.Plugins.WeChat -Version 1.0.4
+PM> Install-Package FayElf.Plugins.WeChat -Version 1.0.5
 ```
 
 PackageReference
 
 ```
-<PackageReference Include="FayElf.Plugins.WeChat" Version="1.0.4" />
+<PackageReference Include="FayElf.Plugins.WeChat" Version="1.0.5" />
 ```
 
 Paket CLI
 
 ```
-> paket add FayElf.Plugins.WeChat --version 1.0.4
+> paket add FayElf.Plugins.WeChat --version 1.0.5
 ```
 
 Script & Interactive
 
 ```
-> #r "nuget: FayElf.Plugins.WeChat, 1.0.4"
+> #r "nuget: FayElf.Plugins.WeChat, 1.0.5"
 ```
 
 Cake
 
 ```
 // Install XiaoFeng as a Cake Addin
-#addin nuget:?package=FayElf.Plugins.WeChat&version=1.0.4
+#addin nuget:?package=FayElf.Plugins.WeChat&version=1.0.5
 
 // Install XiaoFeng as a Cake Tool
-#tool nuget:?package=FayElf.Plugins.WeChat&version=1.0.4
+#tool nuget:?package=FayElf.Plugins.WeChat&version=1.0.5
 ```
+# 更新日志
+
+## 2023-10-27   v 1.0.5
+
+1.优化部分功能;
+
+2.增加readme.md实例;
+
 
 # XiaoFeng 类库包含库
 | 命名空间 | 所属类库 | 开源状态 | 说明 | 包含功能 |
@@ -93,6 +101,7 @@ Cake
 | XiaoFeng.GB28181 | XiaoFeng.GB28181 | :white_check_mark: | 视频监控库，SIP类库，GB28181协议 | 开发中 |
 | XiaoFeng.Onvif | XiaoFeng.Onvif | :white_check_mark: | 视频监控库Onvif协议 | XiaoFeng.Onvif 基于.NET平台使用C#封装Onvif常用接口、设备、媒体、云台等功能， 拒绝WCF服务引用动态代理生成wsdl类文件 ， 使用原生XML扩展标记语言封装参数，所有的数据流向都可控。 |
 | FayElf.Plugins.WeChat | FayElf.Plugins.WeChat | :white_check_mark: | 微信公众号，小程序类库 | 微信公众号，小程序类库。 |
+| XiaoFeng.Mqtt | XiaoFeng.Mqtt | :white_check_mark: | MQTT协议 | XiaoFeng.Mqtt中间件,支持.NET框架、.NET内核和.NET标准库,一种非常方便操作的客户端工具。实现了MQTT客户端，MQTT服务端,同时支持TCP，WebSocket连接。支持协议版本3.0.0,3.1.0,5.0.0。 |
 
 ### FayElf.Plugins.WeChat 用法实例
 
