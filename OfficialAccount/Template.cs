@@ -228,7 +228,7 @@ namespace FayElf.Plugins.WeChat.OfficialAccount
         /// <returns></returns>
         public IndustryTemplateSendDataResult Send(IndustryTemplateSendData data)
         {
-            var config = this.Config.GetConfig(WeChatType.Applets);
+            var config = this.Config.GetConfig(WeChatType.OfficeAccount);
             return Common.Execute(config.AppID, config.AppSecret, token =>
             {
                 var response = HttpHelper.GetHtml(new HttpRequest

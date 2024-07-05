@@ -72,14 +72,23 @@ namespace FayElf.Plugins.WeChat.Applets
         {
             var session = new JsCodeSessionData();
             var config = this.Config.GetConfig(WeChatType.Applets);
+            var address = $"{HttpApi.HOST}/sns/jscode2session?appid={config.AppID}&secret={config.AppSecret}&js_code={code}&grant_type=authorization_code";
             var result = HttpHelper.GetHtml(new HttpRequest
             {
                 Method = HttpMethod.Get,
-                Address = $"{HttpApi.HOST}/sns/jscode2session?appid={config.AppID}&secret={config.AppSecret}&js_code={code}&grant_type=authorization_code"
+                Address = address
             });
             if (result.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                session = result.Html.JsonToObject<JsCodeSessionData>();
+                if (result.Html.Contains("errcode"))
+                {
+                    session.ErrMsg = "请求出错." + result.Html;
+                    session.ErrCode = 500;
+                }
+                else
+                {
+                    session = result.Html.JsonToObject<JsCodeSessionData>();
+                }
             }
             else
             {
